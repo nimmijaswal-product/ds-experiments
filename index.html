@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DSP data science — experiments</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <div class="brand">
+          <img src="assets/dt-logo.png" alt="Digital Turbine" width="160" height="40" />
+          <div class="brand-titles">
+            <h1>Data science (DSP)</h1>
+            <h2>Experimentation dashboard</h2>
+          </div>
+        </div>
+        <p style="margin:0;font-size:0.8rem;color:var(--muted);text-align:right;max-width:20rem;flex-shrink:1" title="Inspiration: Statsig-style registries, side experiment list, KPI comparisons">
+          Add monthly entries in <code class="tiny-code">data/experiments.json</code>
+        </p>
+      </header>
+
+      <p id="loadMessage" class="load-err" style="display: none" aria-live="polite"></p>
+
+      <div class="app-body">
+        <aside class="sidebar">
+          <h3>Register</h3>
+          <p style="font-size:0.78rem; color:var(--muted); margin:0 0.25rem 0.6rem; line-height:1.4">
+            One row per test. Status colors follow the key below the header (scroll on small screens).
+          </p>
+          <div id="statusLegend" class="status-legend" style="margin-bottom:0.75rem"></div>
+          <h3>Filter</h3>
+          <div class="sidebar-filters" role="search">
+            <input
+              type="search"
+              class="search-input"
+              id="searchExperiments"
+              placeholder="Search by name…"
+              aria-label="Search experiments by name"
+              autocomplete="off"
+            />
+            <label for="filterMonth" class="filter-hint" style="font-weight:600; color:var(--muted); margin:0.15rem 0.25rem -0.2rem">Month</label>
+            <select class="filter-select" id="filterMonth" aria-label="Filter by month">
+              <option value="all">All months</option>
+            </select>
+            <p class="filter-hint" id="filterCount"></p>
+          </div>
+          <h3>Experiments</h3>
+          <ul class="experiment-list" id="experimentList"></ul>
+        </aside>
+
+        <main class="main" id="main">
+          <div id="experimentContent" class="experiment-detail"></div>
+        </main>
+      </div>
+
+      <footer class="app-footer">
+        Digital Turbine data science &middot; Internal experiment log &middot; Status: green = win validated, yellow = in flight, blue = good
+        learning, red = halted (negative / guardrails)
+      </footer>
+    </div>
+
+    <script src="js/app.js" defer></script>
+  </body>
+</html>

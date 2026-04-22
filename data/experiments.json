@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "title": "DSP data science — experiment registry",
+    "version": 1
+  },
+  "statusDefinitions": [
+    {
+      "id": "validated",
+      "label": "Validated (win)",
+      "shortLabel": "Validated",
+      "description": "Primary metrics met; safe to scale or ship.",
+      "color": "green"
+    },
+    {
+      "id": "active",
+      "label": "In flight (collecting)",
+      "shortLabel": "In flight",
+      "description": "Running; not yet conclusive.",
+      "color": "yellow"
+    },
+    {
+      "id": "learning",
+      "label": "Good learning (inconclusive)",
+      "shortLabel": "Good learning",
+      "description": "Not a full win, but insight worth acting on — iterate and retest.",
+      "color": "blue"
+    },
+    {
+      "id": "halted",
+      "label": "Halted (negative / guardrails)",
+      "shortLabel": "Halted",
+      "description": "Stopped: material harm or no path to value without redesign.",
+      "color": "red"
+    }
+  ],
+  "experiments": [
+    {
+      "id": "exp-2026-04-bid-nonlinearity",
+      "month": "2026-04",
+      "monthLabel": "April 2026",
+      "name": "Bid non-linearly on install probability to concentrate spend on high-value opportunities",
+      "summary": "Replace linear, rule-heavy bidding with a simpler nonlinear formula driven by install probability to win more on high P(install) requests and less on long-tail.",
+      "status": "learning",
+      "startUtc": "2026-04-16T09:10:00Z",
+      "endUtc": "2026-04-21T09:30:00Z",
+      "businessGoal": "Increase win rate on auctions where a user is very likely to install, and less where they are not, without wrecking ROAS or margin.",
+      "description": "The DS test replaced a linear, heavily rule-based bid (using an older `prediction_installs` gating) with a simpler, nonlinear formula driven by install probability, to push spend toward users/requests the model believes are more likely to install.",
+      "hypothesis": "Variant B amplifies bids for high install-probability users and dampens them for low-probability ones, more aggressively than a straight linear multiplier, producing more volume where the model is confident and a different cost and revenue profile.",
+      "design": {
+        "control": {
+          "name": "Variant A (control, ~90% of traffic)",
+          "bullets": [
+            "“Classical” setup: a linear bid from cost-per-install and install probability, plus extra rules (tiers) from batch metric `prediction_installs` and segment logic."
+          ]
+        },
+        "test": {
+          "name": "Variant B (test, ~10% of traffic)",
+          "bullets": [
+            "Nonlinear (power-law) bid based on `install_proba` only, simpler segment rules (e.g. Engages Installers with Engaged users; no high/medium/low `prediction_installs` steps as in A)."
+          ]
+        }
+      },
+      "kpiNarrative": "Directional outcomes from the run period (tables below show control vs test; uplift is test vs control for each KPI, with color by whether a higher or lower value is “good” for the business).",
+      "kpis": [
+        {
+          "id": "win_rate",
+          "name": "Avg. win rate (normalized)",
+          "higherIsBetter": true,
+          "control": { "value": 8.0, "display": "8.0% (index)" },
+          "test": { "value": 10.0, "display": "10.0% (index)" },
+          "upliftPct": 25.0,
+          "context": "B won more auctions; win rate for top requests (install_proba over 5%) +97% vs low (under 1%) down about 5%."
+        },
+        {
+          "id": "installs",
+          "name": "Traffic-normalized installs",
+          "higherIsBetter": true,
+          "control": { "value": 100, "display": "100 (index)" },
+          "test": { "value": 159.6, "display": "159.6 (index)" },
+          "upliftPct": 59.6,
+          "context": "More conversions from test traffic, not just volume."
+        },
+        {
+          "id": "d1_roas",
+          "name": "D1 ROAS",
+          "higherIsBetter": true,
+          "control": { "value": 100, "display": "100 (index)" },
+          "test": { "value": 144.3, "display": "144.3 (index)" },
+          "upliftPct": 44.3,
+          "context": "Revenue per $ spend, first-day window — looked better in test on charted period."
+        },
+        {
+          "id": "d3_roas",
+          "name": "D3 ROAS",
+          "higherIsBetter": true,
+          "control": { "value": 100, "display": "100 (index)" },
+          "test": { "value": 139.4, "display": "139.4 (index)" },
+          "upliftPct": 39.4
+        },
+        {
+          "id": "d1_rr",
+          "name": "D1 revenue return (D1 RR)",
+          "higherIsBetter": true,
+          "control": { "value": 100, "display": "100 (index)" },
+          "test": { "value": 104.9, "display": "104.9 (index)" },
+          "upliftPct": 4.9
+        },
+        {
+          "id": "ecpi",
+          "name": "eCPI (efficiency of buying installs)",
+          "higherIsBetter": false,
+          "control": { "value": 0.64, "format": "currency" },
+          "test": { "value": 0.83, "format": "currency" },
+          "upliftPct": 30.2,
+          "context": "Expected: bidding up to win “better” users may raise CPI."
+        },
+        {
+          "id": "margin",
+          "name": "Margin (profit / activity)",
+          "higherIsBetter": true,
+          "control": { "value": -0.2315, "display": "−23.15%" },
+          "test": { "value": -0.4902, "display": "−49.02%" },
+          "context": "Gating for the business. Margin is not cohorted in the source doc; between-group relationship is as stated."
+        }
+      ],
+      "resultsNarrative": {
+        "bullets": [
+          "Variant B won more auctions, increased traffic-normalized installs, and showed higher D1 and D3 ROAS.",
+          "eCPI increased materially; margin was worse in test than control even with better short-window ROAS.",
+          "Won on engagement and short-window ROAS; did not meet margin. Needs fine-tuning before wider exposure — valuable learning."
+        ],
+        "tableSummary": "Reach / win rate up: normalized impressions and win rate higher, especially for high P(install). Funnel: installs and IR up (normalized). Revenue: D1/D3 ROAS and D1 RR up. eCPI up. Margin: significantly more negative in B."
+      },
+      "learnings": [
+        "Reaching high-P(install) users improved conversion, indicating strong discriminatory power in ML models.",
+        "Next: cap bids per campaign/segment (`max_acceptable_bid`) and re-run. Longer term: bid shading."
+      ]
+    }
+  ]
+}
