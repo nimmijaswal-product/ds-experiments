@@ -60,7 +60,6 @@
           ]
         }
       },
-      "kpiNarrative": "Directional outcomes from the run period (tables below show Control vs Test; uplift is Test vs Control for each KPI, with color by whether a higher or lower value is “good” for the business).",
       "kpis": [
         {
           "id": "win_rate",
