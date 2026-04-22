@@ -31,11 +31,8 @@
 
       <div class="app-body">
         <aside class="sidebar">
-          <h3>Register</h3>
-          <p style="font-size:0.78rem; color:var(--muted); margin:0 0.25rem 0.6rem; line-height:1.4">
-            One row per test. Status colors follow the key below the header (scroll on small screens).
-          </p>
-          <div id="statusLegend" class="status-legend" style="margin-bottom:0.75rem"></div>
+          <h3>Experiment Status Definition</h3>
+          <div id="statusLegend" class="status-legend status-legend--stacked" style="margin-bottom:0.75rem"></div>
           <h3>Filter</h3>
           <div class="sidebar-filters" role="search">
             <input
@@ -62,8 +59,7 @@
       </div>
 
       <footer class="app-footer">
-        Digital Turbine data science &middot; Internal experiment log &middot; Status: green = win validated, yellow = in flight, blue = good
-        learning, red = halted (negative / guardrails)
+        Digital Turbine data science &middot; Internal experiment log &middot; Status key: green = Validated, yellow = In&nbsp;flight, blue = Insightful (Partial Learning), red = Halted
       </footer>
     </div>
 

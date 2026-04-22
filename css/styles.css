@@ -249,6 +249,14 @@ a {
   font-size: 0.8rem;
 }
 
+/* Left sidebar: one status per line */
+.status-legend--stacked {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+
 .status-legend-item {
   display: flex;
   align-items: center;

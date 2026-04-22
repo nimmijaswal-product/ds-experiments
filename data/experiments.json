@@ -6,28 +6,28 @@
   "statusDefinitions": [
     {
       "id": "validated",
-      "label": "Validated (win)",
+      "label": "Validated (Win)",
       "shortLabel": "Validated",
       "description": "Primary metrics met; safe to scale or ship.",
       "color": "green"
     },
     {
       "id": "active",
-      "label": "In flight (collecting)",
+      "label": "In flight (Collecting)",
       "shortLabel": "In flight",
       "description": "Running; not yet conclusive.",
       "color": "yellow"
     },
     {
       "id": "learning",
-      "label": "Good learning (inconclusive)",
-      "shortLabel": "Good learning",
-      "description": "Not a full win, but insight worth acting on — iterate and retest.",
+      "label": "Insightful (Partial Learning)",
+      "shortLabel": "Insightful",
+      "description": "Partial learning: not a full win, but insight worth acting on — iterate and retest.",
       "color": "blue"
     },
     {
       "id": "halted",
-      "label": "Halted (negative / guardrails)",
+      "label": "Halted (Negative / Guardrails)",
       "shortLabel": "Halted",
       "description": "Stopped: material harm or no path to value without redesign.",
       "color": "red"
