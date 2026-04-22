@@ -281,7 +281,35 @@ a {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--dt-red);
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+/* First block under month pill: title + summary in one card */
+.section--title-desc {
+  margin-top: 0.45rem;
+}
+
+.experiment-card-title {
+  font-size: 1.4rem;
+  line-height: 1.3;
+  margin: 0 0 0.5rem 0;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+.experiment-card-lead {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.5;
+  max-width: 56rem;
+}
+
+/* Status strip under “Experiment Status” heading */
+.section--exp-status .experiment-status {
+  margin-top: 0.45rem;
+  margin-bottom: 0;
 }
 
 .h-title {

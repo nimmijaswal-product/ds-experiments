@@ -373,17 +373,21 @@
     container.innerHTML =
       '<p class="pill-month">' +
       escapeHtml(ex.monthLabel) +
-      "</p><div class=\"experiment-status " +
+      "</p>" +
+      '<div class="section section--title-desc"><h3>Experiment Title and Description</h3><div class="card">' +
+      '<p class="experiment-card-title">' +
+      escapeHtml(ex.name) +
+      '</p><p class="experiment-card-lead">' +
+      escapeHtml(ex.summary) +
+      "</p></div></div>" +
+      '<div class="section section--exp-status"><h3>Experiment Status</h3><div class="experiment-status ' +
       statusCls +
-      '\"><div class="experiment-status__body"><div class="label">' +
+      '"><div class="experiment-status__body"><div class="label">' +
       escapeHtml(def.label) +
       "</div><div class=\"def\">" +
       escapeHtml(def.description) +
-      "</div></div></div><h1 class=\"h-title\">" +
-      escapeHtml(ex.name) +
-      "</h1><p class=\"lead\">" +
-      escapeHtml(ex.summary) +
-      '</p><div class="section"><h3>What we ran (design)</h3><div class="card two-col"><div><h4 class="h-sub">Control</h4><p class="variant-line">' +
+      "</div></div></div></div>" +
+      '<div class="section"><h3>What we ran (design)</h3><div class="card two-col"><div><h4 class="h-sub">Control</h4><p class="variant-line">' +
       escapeHtml(ex.design.control.name) +
       "</p>" +
       designControlBody +
