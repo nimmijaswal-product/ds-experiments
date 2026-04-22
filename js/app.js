@@ -9,6 +9,21 @@
       .replace(/"/g, "&quot;");
   }
 
+  /** In JSON, wrap phrases in **double asterisks** for bold. */
+  function formatBoldMarkers(s) {
+    if (s == null) return "";
+    var parts = String(s).split("**");
+    var out = "";
+    for (var i = 0; i < parts.length; i++) {
+      if (i % 2 === 0) {
+        out += escapeHtml(parts[i]);
+      } else {
+        out += "<strong>" + escapeHtml(parts[i]) + "</strong>";
+      }
+    }
+    return out;
+  }
+
   function formatKpiValue(kpi, side) {
     var o = kpi[side];
     if (!o) return "—";
@@ -282,11 +297,11 @@
           d.cls +
           '">' +
           escapeHtml(d.text) +
-          "</span></div><div class=\"kpi-legend\"><span><i></i> Control</span><span><i class=\"t\"></i> Test</span></div><div class=\"kpi-compare\"><div class=\"kpi-row\"><span class=\"kpi-label-sm\">Ctl</span><div class=\"kpi-bar-outer\"><div class=\"kpi-bar control\" style=\"width:" +
+          "</span></div><div class=\"kpi-legend\"><span><i></i> Control</span><span><i class=\"t\"></i> Test</span></div><div class=\"kpi-compare\"><div class=\"kpi-row\"><span class=\"kpi-label-sm\">Control</span><div class=\"kpi-bar-outer\"><div class=\"kpi-bar control\" style=\"width:" +
           ratio.cPct +
           '%\"></div></div><span class=\"kpi-right\">' +
           escapeHtml(formatKpiValue(k, "control")) +
-          "</span></div><div class=\"kpi-row\"><span class=\"kpi-label-sm\">Tst</span><div class=\"kpi-bar-outer\"><div class=\"kpi-bar test\" style=\"width:" +
+          "</span></div><div class=\"kpi-row\"><span class=\"kpi-label-sm\">Test</span><div class=\"kpi-bar-outer\"><div class=\"kpi-bar test\" style=\"width:" +
           ratio.tPct +
           '%\"></div></div><span class=\"kpi-right\">' +
           escapeHtml(formatKpiValue(k, "test")) +
@@ -344,12 +359,23 @@
 
     var durationStr = formatExperimentDuration(ex.startUtc, ex.endUtc);
 
+    var designControlBody = (ex.design.control.bullets || [])
+      .map(function (t) {
+        return '<p class="field-value design-prose">' + formatBoldMarkers(t) + "</p>";
+      })
+      .join("");
+    var designTestBody = (ex.design.test.bullets || [])
+      .map(function (t) {
+        return '<p class="field-value design-prose">' + formatBoldMarkers(t) + "</p>";
+      })
+      .join("");
+
     container.innerHTML =
       '<p class="pill-month">' +
       escapeHtml(ex.monthLabel) +
       "</p><div class=\"experiment-status " +
       statusCls +
-      '"><div><div class="label">' +
+      '\"><div class="experiment-status__body"><div class="label">' +
       escapeHtml(def.label) +
       "</div><div class=\"def\">" +
       escapeHtml(def.description) +
@@ -357,36 +383,30 @@
       escapeHtml(ex.name) +
       "</h1><p class=\"lead\">" +
       escapeHtml(ex.summary) +
-      '</p><div class="section"><h3>What we ran (design)</h3><div class="card two-col"><div><h4 class="h-sub">Control</h4><p class="para" style="font-size:0.8rem; font-weight:600; margin:0.15rem 0 0.35rem 0">' +
+      '</p><div class="section"><h3>What we ran (design)</h3><div class="card two-col"><div><h4 class="h-sub">Control</h4><p class="variant-line">' +
       escapeHtml(ex.design.control.name) +
-      "</p><ul class=\"clean\">" +
-      (ex.design.control.bullets || [])
-        .map(function (t) {
-          return "<li>" + escapeHtml(t) + "</li>";
-        })
-        .join("") +
-      '</ul></div><div><h4 class="h-sub">Test</h4><p class="para" style="font-size:0.8rem; font-weight:600; margin:0.15rem 0 0.35rem 0">' +
+      "</p>" +
+      designControlBody +
+      '</div><div><h4 class="h-sub">Test</h4><p class="variant-line">' +
       escapeHtml(ex.design.test.name) +
-      "</p><ul class=\"clean\">" +
-      (ex.design.test.bullets || [])
-        .map(function (t) {
-          return "<li>" + escapeHtml(t) + "</li>";
-        })
-        .join("") +
-      "</ul></div></div></div>" +
-      '<div class="section"><h3>Goal, timing &amp; hypothesis</h3><div class="card"><p class="para"><strong>Business goal:</strong> ' +
+      "</p>" +
+      designTestBody +
+      "</div></div></div>" +
+      '<div class="section"><h3>Goal, timing &amp; hypothesis</h3><div class="card">' +
+      '<div class="field-block"><span class="field-label">Business goal</span><p class="field-value">' +
       escapeHtml(ex.businessGoal) +
-      '</p><p class="dates" style="margin:0.6rem 0"><span><strong>Start</strong> <code class="tiny-code">' +
+      '</p></div><p class="dates" style="margin:0.65rem 0 0.15rem 0"><span><strong>Start</strong> <code class="tiny-code">' +
       escapeHtml(isoFmt(ex.startUtc)) +
       'UTC</code></span> <span><strong>End</strong> <code class="tiny-code">' +
       escapeHtml(isoFmt(ex.endUtc)) +
-      'UTC</code></span></p><p class="dates duration-line"><span><strong>Experiment duration</strong></span> ' +
+      'UTC</code></span></p><p class="dates duration-line" style="margin-top:0.35rem"><span class="duration-label">Experiment duration</span><span class="duration-value">' +
       escapeHtml(durationStr) +
-      '</p><p class="para" style="margin:0.75rem 0 0 0"><strong>Description</strong> — ' +
+      "</span></p>" +
+      '<div class="field-block field-block--tight" style="margin-top:0.85rem"><span class="field-label">Description</span><p class="field-value">' +
       escapeHtml(ex.description) +
-      "</p><p class='para' style='margin:0.6rem 0 0 0'><strong>Hypothesis</strong> — " +
+      '</p></div><div class="field-block field-block--tight" style="margin-top:0.9rem"><span class="field-label">Hypothesis</span><p class="field-value">' +
       escapeHtml(ex.hypothesis) +
-      "</p></div></div>" +
+      "</p></div></div></div>" +
       '<div class="section"><h3>KPIs: control vs test</h3>' +
       kpiNarr +
       '<div class="kpi-grid">' +
