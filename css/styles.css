@@ -429,32 +429,6 @@ ul.check li::before {
   border-radius: 4px;
 }
 
-.dates.duration-line {
-  margin: 0.4rem 0 0.15rem 0;
-  color: var(--ink);
-  font-size: 0.9rem;
-  width: 100%;
-  flex-basis: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35rem 0.5rem;
-}
-
-.dates.duration-line .duration-label {
-  color: var(--ink);
-  font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 0.01em;
-  text-transform: none;
-}
-
-.dates.duration-line .duration-value {
-  color: var(--ink);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-
 /* Label + body on separate lines (goal, description, hypothesis) */
 .field-block {
   margin: 0 0 0.85rem 0;

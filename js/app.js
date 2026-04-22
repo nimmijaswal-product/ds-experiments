@@ -403,9 +403,9 @@
       escapeHtml(isoFmt(ex.startUtc)) +
       'UTC</code></span> <span><strong>End</strong> <code class="tiny-code">' +
       escapeHtml(isoFmt(ex.endUtc)) +
-      'UTC</code></span></p><p class="dates duration-line" style="margin-top:0.35rem"><span class="duration-label">Experiment duration</span><span class="duration-value">' +
+      'UTC</code></span> <span><strong>Experiment duration</strong> <code class="tiny-code">' +
       escapeHtml(durationStr) +
-      "</span></p>" +
+      "</code></span></p>" +
       '<div class="field-block field-block--tight" style="margin-top:0.85rem"><span class="field-label">Description</span><p class="field-value">' +
       escapeHtml(ex.description) +
       '</p></div><div class="field-block field-block--tight" style="margin-top:0.9rem"><span class="field-label">Hypothesis</span><p class="field-value">' +
